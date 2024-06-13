@@ -1,28 +1,54 @@
 import { useState } from "react";
-import './App.css';
+import './ToDoList.css';
 
 const ToDoList = () => {
   const [tasks, setTasks] = useState(['Example One', 'Example Two']);
   const [newTask, setNewTask] = useState('');
+  const [editIndex, setEditIndex] = useState(null);
+  const [editValue, setEditValue] = useState('');
 
   const handleInputChange = (e) => {
     setNewTask(e.target.value);
   };
 
   const addTask = () => {
-
+    if (newTask.trim() !== '') {
+      setTasks(t => [...t, newTask]);
+      setNewTask('');
+    }
   };
 
   const deleteTask = (index) => {
-
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
   }
 
   const moveTaskUp = (index) => {
-
+    if (index > 0) {
+      const updatedTasks = [...tasks];
+      [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
+      setTasks(updatedTasks);
+    }
   }
 
   const moveTaskDown = (index) => {
+    if (index < tasks.length - 1) {
+      const updatedTasks = [...tasks];
+      [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]];
+      setTasks(updatedTasks);
+    }
+  }
 
+  const handleEditChange = (e) => {
+    setEditValue(e.target.value)
+  }
+
+  const handleEdit = (index) => {
+
+  }
+
+  const handleResubmit = (e) => {
+    
   }
 
   return (
@@ -52,13 +78,13 @@ const ToDoList = () => {
             </button>
             <button 
               onClick={() => moveTaskUp(index)}
-              className="move-up-button">
-                Move Up
+              className="move-button">
+                ⬆️
             </button>
             <button 
               onClick={() => moveTaskDown(index)}
-              className="move-down-button">
-                Move Down
+              className="move-button">
+                ⬇️
             </button>
           </li>
         )}
